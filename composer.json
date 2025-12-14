@@ -1,0 +1,36 @@
+{
+    "name": "formation/boutique-php",
+    "description": "Projet e-commerce PHP - Formation Jours 6-10",
+    "type": "project",
+    "require": {
+        "php": ">=8.1",
+        "ext-pdo": "*",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.10",
+        "rector/rector": "^0.18",
+        "laravel/pint": "^1.13"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Core\\": "core/"
+        },
+        "files": [
+            "core/helpers.php"
+        ]
+    },
+    "scripts": {
+        "analyse": "phpstan analyse",
+        "format": "pint",
+        "refactor": "rector process"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

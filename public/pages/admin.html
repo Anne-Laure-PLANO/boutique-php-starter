@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Boutique PHP</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container header__content">
+            <a href="/" class="header__logo">🛍️ PHP Store Admin</a>
+            <nav class="header__nav">
+                <a href="/">Retour au site</a>
+                <a href="/admin">Produits</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1 class="section__title">Administration - Produits</h1>
+
+            <div class="alert alert-info">
+                <strong>👨‍💻 Backend à implémenter (Jour 9)</strong><br>
+                Créer AdminProduitController avec CRUD complet (Create, Read, Update, Delete)
+            </div>
+
+            <div class="mb-3">
+                <a href="#" class="btn btn-primary">+ Nouveau produit</a>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Prix</th>
+                        <th>Stock</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="5" class="text-center">Aucun produit. Implémenter ProduitRepository->findAll()</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__bottom">
+                <p>&copy; 2025 Boutique PHP</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/app.js"></script>
+</body>
+
+</html>

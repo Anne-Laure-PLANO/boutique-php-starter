@@ -1,0 +1,45 @@
+{
+    # Mode développement
+    auto_https off
+    admin off
+}
+
+# Serveur principal
+localhost:8000 {
+    # Document root
+    root * public
+
+    # PHP handler avec FrankenPHP
+    php_server {
+        resolve_root_symlink
+    }
+
+    # Fichiers statiques
+    file_server
+
+    # Logs
+    log {
+        output file storage/logs/access.log
+        level INFO
+    }
+
+    # En-têtes de sécurité
+    header {
+        # Désactiver l'indexation des dossiers
+        -Server
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "SAMEORIGIN"
+        X-XSS-Protection "1; mode=block"
+    }
+
+    # Gestion des erreurs
+    handle_errors {
+        @404 {
+            expression {http.error.status_code} == 404
+        }
+        handle @404 {
+            rewrite * /index.php
+        }
+        respond "{http.error.status_code} {http.error.status_text}"
+    }
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogue - Boutique PHP</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container header__content">
+            <a href="/" class="header__logo">🛍️ PHP Store</a>
+            <div class="header__search">
+                <form action="/catalogue" method="GET">
+                    <input type="text" name="recherche" placeholder="Rechercher un produit...">
+                </form>
+            </div>
+            <nav class="header__nav">
+                <a href="/">Accueil</a>
+                <a href="/catalogue">Catalogue</a>
+                <a href="/panier" class="header__cart">🛒 Panier <span class="header__cart-badge">0</span></a>
+                <a href="/admin">Admin</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="/">Accueil</a>
+                <span>/</span>
+                <span>Catalogue</span>
+            </div>
+
+            <h1 class="section__title">Catalogue de produits</h1>
+
+            <div class="alert alert-info">
+                <strong>👨‍💻 Backend à implémenter (Jour 8-9)</strong><br>
+                Créer ProduitRepository->findAll() et ProduitController->index()
+            </div>
+
+            <div class="product-grid">
+                <p class="text-center" style="grid-column: 1/-1;">Aucun produit chargé. Implémenter le backend pour
+                    afficher les produits.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__bottom">
+                <p>&copy; 2025 Boutique PHP</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/app.js"></script>
+</body>
+
+</html>
