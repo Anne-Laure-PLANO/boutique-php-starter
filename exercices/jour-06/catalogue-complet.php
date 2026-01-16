@@ -98,7 +98,6 @@ foreach ($products as $item){
         $categorie[]=$item["category"];
     }
 }
-if ($_SERVER["REQUEST_METHOD"]=="GET"){
     $rNom = (isset($_GET["rechercheParNom"]))? htmlspecialchars($_GET["rechercheParNom"]):"";
     $rCategorie = (isset($_GET["rechercheParCategorie"]))? htmlspecialchars($_GET["rechercheParCategorie"]):"";
     $rPrixMin = (isset($_GET["RecherchePrixMin"]))? htmlspecialchars($_GET["RecherchePrixMin"]):"";
@@ -110,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"]=="GET"){
     $rPagination = (isset($_GET["pagination"]))? $_GET["pagination"]:"";
 
 
-}
+
 $filtered = array_filter($products,function ($item) use ($rCategorie, $rNom){
     if (stripos($item["name"], $rNom)===false)return false;
     if ($rCategorie !==$item["category"])return false;
@@ -118,6 +117,11 @@ $filtered = array_filter($products,function ($item) use ($rCategorie, $rNom){
     return true;
 });
 var_dump($filtered);
+if(!empty($filtered)){
+    $tableauABoucler = $filtered;
+}else {
+    $tableauABoucler = $products;
+}
 ?>
 
 <!DOCTYPE html>
@@ -179,7 +183,7 @@ var_dump($filtered);
 
             <p>X produits trouvés : </p>
             <div style="display:flex ; flex-wrap:wrap; gap:5px">
-                <?php foreach ($products as $item):?>
+                <?php foreach ($tableauABoucler as $item):?>
                     <article style="width:20% ; min-width:150px; background-color: #c8c3c3ff;border:1px grey solid ; border-radius:30px; padding:10px ">
                         <h4 style="text-align:center"><?=$item["name"]?></h4>
                         <p><?=$item["category"]?></p>

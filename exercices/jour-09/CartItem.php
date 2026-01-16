@@ -17,6 +17,12 @@ class CartItem{
         return $this->product;
     }
     
+    public function getQuantity(){
+        return $this->quantity;
+    }
+    public function modifyQuantity($newQuantity){
+        return $this->quantity = $newQuantity;
+    }
     public function incremente($add){
         return $this->quantity += $add;
     }
@@ -26,15 +32,13 @@ class CartItem{
     }
 }
 
-$NewCartItem= new CartItem($tshirt, 1 );
-$NewCartItem->incremente(9);
-echo $NewCartItem->getTotal();
-?><br><?php
-$CartePantalon = new CartItem($pantalon, 10);
-echo $CartePantalon->getTotal();
-?><br><?php
+$tshirt= new CartItem($tshirt, 1 );
+//$NewCartItem->incremente(9);
+//echo $NewCartItem->getTotal();
+$CartePantalon = new CartItem($pantalon);
+//echo $CartePantalon->getTotal();
 
 $achatLaveVaisselle = new CartItem($laveVaisselle);
-echo $achatLaveVaisselle->getTotal();
+//echo $achatLaveVaisselle->getTotal();
 
 ?>
