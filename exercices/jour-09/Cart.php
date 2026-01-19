@@ -2,87 +2,112 @@
 require("CartItem.php");
 
 class Cart{
-    private static array $arrayCarts=[];
+    private array $arrayCarts=[];
 
-    function __construct(CartItem $CartItem){
-        self::$arrayCarts[] = $CartItem ;
-    }
-    
-    public function add(CartItem $addCartItem):array{
-        if (in_array($addCartItem,self::$arrayCarts )){
-            self::$arrayCarts[$addCartItem]->quantity+=1;
-            return self::$arrayCarts;
-        }else {
-            self::$arrayCarts[] = $addCartItem;
-            return self::$arrayCarts;
+    function __construct(? CartItem $cartItem = null){
+        $this->arrayCarts = [] ;
+
+        if ($cartItem !== null) {
+        $this->addCartItem($cartItem);
         }
     }
 
+//testée, fonctionne.
+    public function addCartItem(CartItem $cartItem):array{
+        $id = array_search($cartItem, $this->arrayCarts, true);
+        if ($id !== false){
+            $cartItem->incremente(1);
+        }else {
+            $this->arrayCarts[] = $cartItem;
+        }
+        return $this->arrayCarts;
+    }
+//testée, fonctionne.
     public function remove(CartItem $removeItem) : array{
         #vérifier que le produit est dans le tableau :
-        if(in_array($removeItem,self::$arrayCarts)){
+        if(in_array($removeItem,$this->arrayCarts, true)){
             #trouver l'emplacement du produit dans le tableau
-            $locationRemoveItem = array_search($removeItem, self::$arrayCarts);
+            $locationRemoveItem = array_search($removeItem, $this->arrayCarts, true);
             #supprimer item concerné
-            return array_splice(self::$arrayCarts,$locationRemoveItem);
+            array_splice($this->arrayCarts,$locationRemoveItem,1);
+            return $this->arrayCarts;
         }else{
-            echo "erreur, produit non trouvé.";
-            return self::$arrayCarts;
+            echo "<br> erreur, produit non trouvé.<br>";
+            return $this->arrayCarts;
         }                   
     }
 
-    
-    public function update(CartItem $CarteConcernee, int $newQuantity) : array{
-        if (in_array($carteConcernee, self::$arrayCarts)){
-            $idCarteConcernee= array_search($carteConcernee, self::$arrayCarts);
+//testée, fonctionne.
+    public function update(CartItem $carteConcernee, int $newQuantity) : array{
+        $idCarteConcernee= array_search($carteConcernee, $this->arrayCarts, true);
+        if ($idCarteConcernee === false && $newQuantity>0){
+            $this->addCartItem($carteConcernee);
+                return $this->arrayCarts;
+        } 
+        if ($idCarteConcernee !== false){
             if ($newQuantity >0){
-                self::$arrayCarts[$idCarteConcernee]->modifyQuantity($newQuantity);
-                return self::$arrayCarts[$CarteConcernee];
-            } if ($newQuantity===0) {
-                return remove(self::$arrayCarts[$CarteConcernee]);
+                $carteConcernee->modifyQuantity($newQuantity);
+            } else {
+                $this->remove($carteConcernee);
             }
-        } else{
-            echo "erreur, le produit est introuvable <br>";
         }
+        return $this->arrayCarts;
     }
+    
 
-
+//testée, fonctionne.
     public function getTotal():float{
-        $totalCart;
-        foreach (self::$arrayCarts as $cart){
+        $totalCart=0;
+        foreach ($this->arrayCarts as $cart){
             $totalCart += $cart->getTotal();
         }
-        return $totalCart;
+        return $totalCart;    
     }
 
+//testée, fonctionne.
     #calcul du nombre total d'articles :
-    public function count(){
-        $totalCarts;
-        foreach(self::$arrayCarts as $cart){
+    public function count() : int{
+        $totalCarts = 0;
+        foreach($this->arrayCarts as $cart){
             $totalCarts += $cart->getQuantity();
         }
-        return $totalCarts;
+        return $totalCarts;    
     }
 
-
+//testée, fonctionne.
     #supprime entièrement le contenu de la carte
-    public function clear(){
-        return self::$arrayCarts =[];
+    public function clear(): array{
+        return $this->arrayCarts =[];
     }
 
-
+// testée, fonctionne
     public function displayCart():void{
-        Echo "Dans mon panier il y a : <br>";
-        foreach (self::$arrayCarts as $object){
+        Echo "<br> Dans mon panier il y a : <br>";
+        foreach ($this->arrayCarts as $object){
             echo $object->getQuantity() ." article(s) de " .$object->getProduct()->getName(). "<br>" ;
             //var_dump( $object);
         }
     }
 }
 $panier = new Cart($CartePantalon);
-$panier->add($achatLaveVaisselle);
-$panier->add($tshirt);
-$panier->update($tshirt,12);
-$panier->displayCart();
+$panier->addCartItem($achatLaveVaisselle);
+$panier->addCartItem($tshirt);
+// $panier->displayCart();
+
+// $panier->update($tshirt,10);
+$panier->addCartItem($velo);
+// $panier->displayCart();
+
+// $panier->remove($velo);
+// $panier->displayCart();
+// $panier->remove($velo);
+// $panier->displayCart();
+// $panier->getTotal();
+// $panier->count();
+
+// //$panier->clear();
+// $panier->displayCart();
+$panier->addCartItem($achatLaveVaisselle);
+// $panier->displayCart();
 
 ?>

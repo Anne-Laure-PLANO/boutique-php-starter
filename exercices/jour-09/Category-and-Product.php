@@ -49,12 +49,14 @@ class Product {
 $clothes = new Category("Vêtements");
 $informatique = new Category("Informatique");
 $electromenager = new Category("Electroménager");
+$loisirs= new Category("Loisirs");
 
 $tshirt = new Product("T-shirt", 29.99, $clothes);
 $laveVaisselle = new Product("Lave-vaisselle", 200, $electromenager);
 $ordinateur = new Product("Ordinateur portable", 900, $informatique);
 $imprimante = new Product("Imprimante Jet d'Encre", 150, $informatique);
 $pantalon = new Product("Pantalon Stretch", 39.99, $clothes);
+$velo = new Product("Vélo", 150.99, $loisirs);
 
 // #Version moche, longue et pénible, surtout si 200 produits :
 // // echo $tshirt->getCategory()->getName(); // "Vêtements"

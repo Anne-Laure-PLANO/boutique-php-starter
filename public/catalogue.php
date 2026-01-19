@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catalogue - MaBoutique</title>
     <link rel="stylesheet" href="css/style.css">
+    
+    <?php
+// starter-project/public/catalogue.php
+require_once __DIR__ . '/../app/data.php';
+// $products est maintenant disponible
+?>
+
+   
+
 </head>
 <body>
 
@@ -13,7 +22,7 @@
         <a href="index.html" class="header__logo">🛍️ MaBoutique</a>
         <nav class="header__nav">
             <a href="index.html" class="header__nav-link">Accueil</a>
-            <a href="catalogue.html" class="header__nav-link header__nav-link--active">Catalogue</a>
+            <a href="catalogue.php" class="header__nav-link header__nav-link--active">Catalogue</a>
             <a href="contact.html" class="header__nav-link">Contact</a>
         </nav>
         <div class="header__actions">
@@ -87,7 +96,7 @@
                     </div>
 
                     <button type="submit" class="btn btn--primary btn--block">Appliquer</button>
-                    <a href="catalogue.html" class="btn btn--secondary btn--block mt-sm">Réinitialiser</a>
+                    <a href="catalogue.php" class="btn btn--secondary btn--block mt-sm">Réinitialiser</a>
                 </form>
             </aside>
 
@@ -111,34 +120,60 @@
                      JOUR 4 : Badges conditionnels
                      ============================================ -->
                 <div class="products-grid">
-
                     <!-- 1. T-shirt - NOUVEAU -->
-                    <article class="product-card">
-                        <div class="product-card__image-wrapper">
-                            <img src="https://via.placeholder.com/300x300/e2e8f0/64748b?text=T-shirt" alt="T-shirt" class="product-card__image">
-                            <div class="product-card__badges"><span class="badge badge--new">Nouveau</span></div>
-                        </div>
-                        <div class="product-card__content">
-                            <span class="product-card__category">Vêtements</span>
-                            <a href="produit.html?id=1" class="product-card__title">T-shirt Premium Bio</a>
-                            <div class="product-card__price"><span class="product-card__price-current">35,99 €</span></div>
-                            <p class="product-card__stock product-card__stock--available">✓ En stock (45)</p>
-                            <div class="product-card__actions">
-                                <form action="panier.html" method="POST">
-                                    <input type="hidden" name="product_id" value="1">
-                                    <button type="submit" class="btn btn--primary btn--block">Ajouter</button>
-                                </form>
+                    <?php foreach ($catalogue as $index): ?>
+                        <article class="product-card">
+                            <div class="product-card__image-wrapper">
+                                <img src="<?=$index["image"] ?>" alt="<?= $index["name"] ?>" class="product-card__image">
+                                <!-- vignette "nouveau" en fonction de la date -->
+                                <?php $nbJours = ($dateJour->diff($index["dateSortie"]))->days;?>
+                                
+                                <div class="product-card__badges">
+                                    <?php if ($nbJours<30): ?>
+                                            <span class="badge badge--new">Nouveau</span>
+                                    <?php endif; ?>
+                                            
+                                    <!-- vignet "promo" en fonction de la promo -->
+                                    <?php if ($index["promo"]> 0): ?>
+                                        <span class="badge badge--promo">PROMO - <?=$index["promo"] ?>%</span>
+                                    <?php endif; ?>
+                                        
+                                        <!-- vignette "rupture" ou "derniers" en fonction du stock -->
+                                    <?php if ($index["stock"]=== 0): ?>
+                                        <span class="badge badge--out-of-stock">Rupture</span>
+                                    <?php endif; ?>
+                                            
+                                    <?php if ($index["stock"]< 5 && $index["stock"]!== 0): ?>
+                                        <span class="badge badge--low-stock">Derniers</span>
+                                    <?php endif; ?>
+                                </div>
                             </div>
-                        </div>
-                    </article>
-
+                            <div class="product-card__content">
+                                <span class="product-card__category"><?=$index["categorie"] ?></span>
+                                <a href="produit.html?id=1" class="product-card__title"><?=$index["name"] ?></a>
+                                <div class="product-card__price"><span class="product-card__price-current"><?=$index["prix"] ?> €</span></div>
+                                <?php if ($index["stock"]===0): ?>
+                                    <p class="product-card__stock product-card__stock--out">✗ Rupture</p>
+                                <?php elseif ($index["stock"]<5): ?>
+                                    <p class="product-card__stock product-card__stock--low">⚠ Plus que <?=$index["stock"] ?></p>
+                                <?php else: ?>
+                                    <p class="product-card__stock product-card__stock--available">✓ En stock (<?=$index["stock"] ?>)</p>
+                                <?php endif; ?>
+                                <div class="product-card__actions">
+                                    <form action="panier.html" method="POST">
+                                        <input type="hidden" name="product_id" value="1">
+                                        <button type="submit" class="btn btn--primary btn--block">Ajouter</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </article>
+                    <?php endforeach; ?>
                     <!-- 2. Sneakers - PROMO + DERNIERS -->
                     <article class="product-card">
                         <div class="product-card__image-wrapper">
                             <img src="https://via.placeholder.com/300x300/e2e8f0/64748b?text=Sneakers" alt="Sneakers" class="product-card__image">
                             <div class="product-card__badges">
                                 <span class="badge badge--promo">-20%</span>
-                                <span class="badge badge--low-stock">Derniers</span>
                             </div>
                         </div>
                         <div class="product-card__content">
@@ -297,7 +332,7 @@
     <div class="container">
         <div class="footer__grid">
             <div class="footer__section"><h4>À propos</h4><p>MaBoutique - Shopping en ligne.</p></div>
-            <div class="footer__section"><h4>Navigation</h4><ul><li><a href="index.html">Accueil</a></li><li><a href="catalogue.html">Catalogue</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+            <div class="footer__section"><h4>Navigation</h4><ul><li><a href="index.html">Accueil</a></li><li><a href="catalogue.php">Catalogue</a></li><li><a href="contact.html">Contact</a></li></ul></div>
             <div class="footer__section"><h4>Compte</h4><ul><li><a href="connexion.html">Connexion</a></li><li><a href="inscription.html">Inscription</a></li><li><a href="panier.html">Panier</a></li></ul></div>
             <div class="footer__section"><h4>Formation</h4><ul><li><a href="#">Jour 1-5</a></li><li><a href="#">Jour 6-10</a></li><li><a href="#">Jour 11-14</a></li></ul></div>
         </div>
