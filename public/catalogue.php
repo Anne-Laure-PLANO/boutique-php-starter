@@ -19,9 +19,9 @@ require_once __DIR__ . '/../app/data.php';
 
 <header class="header">
     <div class="container header__container">
-        <a href="index.html" class="header__logo">🛍️ MaBoutique</a>
+        <a href="index.php" class="header__logo">🛍️ MaBoutique</a>
         <nav class="header__nav">
-            <a href="index.html" class="header__nav-link">Accueil</a>
+            <a href="index.php" class="header__nav-link">Accueil</a>
             <a href="catalogue.php" class="header__nav-link header__nav-link--active">Catalogue</a>
             <a href="contact.html" class="header__nav-link">Contact</a>
         </nav>
@@ -332,7 +332,7 @@ require_once __DIR__ . '/../app/data.php';
     <div class="container">
         <div class="footer__grid">
             <div class="footer__section"><h4>À propos</h4><p>MaBoutique - Shopping en ligne.</p></div>
-            <div class="footer__section"><h4>Navigation</h4><ul><li><a href="index.html">Accueil</a></li><li><a href="catalogue.php">Catalogue</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+            <div class="footer__section"><h4>Navigation</h4><ul><li><a href="index.php">Accueil</a></li><li><a href="catalogue.php">Catalogue</a></li><li><a href="contact.html">Contact</a></li></ul></div>
             <div class="footer__section"><h4>Compte</h4><ul><li><a href="connexion.html">Connexion</a></li><li><a href="inscription.html">Inscription</a></li><li><a href="panier.html">Panier</a></li></ul></div>
             <div class="footer__section"><h4>Formation</h4><ul><li><a href="#">Jour 1-5</a></li><li><a href="#">Jour 6-10</a></li><li><a href="#">Jour 11-14</a></li></ul></div>
         </div>

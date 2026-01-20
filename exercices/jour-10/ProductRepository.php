@@ -1,9 +1,52 @@
 <?php
-require("../jour-09/Order.php");
+
+class Product {
+    public static array $arrayProducts = [];
+
+    public function __construct(
+        private string $name,
+        private string $description,
+        private float $price,
+        private int $stock,
+        private string $category,
+        private int $id,
+        private ?DateTimeImmutable $dateCreation = null
+        
+    ) {
+        self::$arrayProducts[] = $this;
+        $this->dateCreation = $dateCreation?? new DateTimeImmutable();
+        
+    }
+    public function getId():int{
+        return $this->id;
+    }
+    public function getStock():int{
+        return $this->stock;
+    }
+    public function getDescription():string{
+        return $this->description;
+    }
+    public function getDateCreation():DateTimeImmutable{
+        return $this->dateCreation;
+    }
+    public function getName(): string {
+        return $this->name;
+    }
+    public function getPrice(): float {
+        return $this->price;
+    }
+    public function setPrice(float $newPrice):void{
+        $this->price = $newPrice;
+    }
+    public function getCategory(): string {
+        return $this->category;
+    }
+}
 
 
+//----------------------------------------------------------------------------------------------------//
+class ProductRepository{
 
-class ProductRepository {
     public function __construct(private PDO $pdo) {}
     
     // READ - Un seul
@@ -24,28 +67,36 @@ class ProductRepository {
     // CREATE
     public function save(Product $product): void    {
         $stmt = $this->pdo->prepare(
-            "INSERT INTO products (name, price, stock) VALUES (?, ?, ?)"
+            "INSERT INTO products (name, description, price, stock, category, created_at) VALUES (?, ?, ?,?,?, ?)"
         );
         $stmt->execute([
             $product->getName(),
+            $product->getDescription(),
             $product->getPrice(),
-            $product->getStock()
+            $product->getStock(),
+            $product->getCategory(),
+            $product->getDateCreation()->format('Y-m-d H:i:s')
+
+            
+
         ]);
     }
     
     // UPDATE
     public function update(Product $product): void    {
         $stmt = $this->pdo->prepare(
-            "UPDATE products SET name = ?, price = ?, stock = ? WHERE id = ?"
+            "UPDATE products SET name = ?, description = ?, price = ?, stock = ? , category = ? WHERE id = ?"
         );
         $stmt->execute([
             $product->getName(),
+            $product->getDescription(),
             $product->getPrice(),
             $product->getStock(),
+            $product->getCategory(),
             $product->getId()
         ]);
     }
-    
+   
     // DELETE
     public function delete(int $id): void    {
         $stmt = $this->pdo->prepare("DELETE FROM products WHERE id = ?");
@@ -57,36 +108,12 @@ class ProductRepository {
         return new Product(
             id: (int) $data['id'],
             name: $data['name'],
+            description: $data['description'],
             price: (float) $data['price'],
-            stock: (int) $data['stock']
+            stock: (int) $data['stock'],
+            category: $data['category'],
+            dateCreation:new DateTimeImmutable($data['created_at'])
         );
     }
 }
-// Configuration
-$pdo = new PDO("mysql:host=localhost;dbname=boutique", "dev", "dev");
-$productRepo = new ProductRepository($pdo);
-
-// Récupérer tous les produits
-$products = $productRepo->findAll();
-
-// Récupérer un produit
-$product = $productRepo->find(42);
-
-// Créer un produit
-$newProduct = new Product(name: "Casquette", price: 19.99, stock: 100);
-$productRepo->save($newProduct);
-
-// Modifier
-$product->setPrice(24.99);
-$productRepo->update($product);
-
-// Supprimer
-$productRepo->delete(42);
-
-
-
-
-
-
-
-?>
+//--------------------------------------------------------------------------------//

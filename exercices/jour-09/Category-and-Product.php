@@ -25,13 +25,21 @@ class Category {
 
 class Product {
     public static array $arrayProducts = [];
-    
+    private static int $nextId=1;
+    private int $id;
+    private DateTimeImmutable $dateCreation;
+
     public function __construct(
         private string $name,
+        private string $description,
         private float $price,
-        private Category $category // Relation !
+        private int $stock,
+        private Category $category, // Relation !
+        
     ) {
         self::$arrayProducts[] = $this;
+        $this->id = self::$nextId++ ;
+        $this->dateCreation = new DateTimeImmutable();
     }
     
     public function getName(): string {
@@ -40,8 +48,7 @@ class Product {
     public function getPrice(): float {
         return $this->price;
     }
-    public function getCategory(): Category
-    {
+    public function getCategory(): Category {
         return $this->category;
     }
 }
@@ -51,12 +58,12 @@ $informatique = new Category("Informatique");
 $electromenager = new Category("Electroménager");
 $loisirs= new Category("Loisirs");
 
-$tshirt = new Product("T-shirt", 29.99, $clothes);
-$laveVaisselle = new Product("Lave-vaisselle", 200, $electromenager);
-$ordinateur = new Product("Ordinateur portable", 900, $informatique);
-$imprimante = new Product("Imprimante Jet d'Encre", 150, $informatique);
-$pantalon = new Product("Pantalon Stretch", 39.99, $clothes);
-$velo = new Product("Vélo", 150.99, $loisirs);
+$tshirt = new Product("T-shirt","super T-Shirt tout neuf", 29.99, 300, $clothes);
+$laveVaisselle = new Product("Lave-vaisselle","super lave-vaisselle tout beau", 200, 50, $electromenager);
+$ordinateur = new Product("Ordinateur portable","une magnifique tablette qui peut s'ouvrir et se fermer.", 900, 100, $informatique);
+$imprimante = new Product("Imprimante Jet d'Encre","blabla de description", 150, 60, $informatique);
+$pantalon = new Product("Pantalon Stretch", "blabla", 39.99, 160, $clothes);
+$velo = new Product("Vélo", "sdgtkhfjksdyhrodtuj",150.99, 590, $loisirs);
 
 // #Version moche, longue et pénible, surtout si 200 produits :
 // // echo $tshirt->getCategory()->getName(); // "Vêtements"
